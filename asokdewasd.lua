@@ -1,4 +1,4 @@
-﻿-- Layanan Roblox yang diperlukan
+-- Layanan Roblox yang diperlukan
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
