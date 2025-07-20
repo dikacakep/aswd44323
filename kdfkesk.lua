@@ -71,7 +71,7 @@ local function extractHarvest()
     local seen = {}
     for harvestName, stockLabel in pairs(harvestFrames) do
         local stock = getStock(stockLabel)
-        local emoji = emojiMap[harvestName]
+        local emoji = emojiMap[harvestName] or ""
         if stock and stock > 0 and not seen[harvestName] then
             seen[harvestName] = true
             table.insert(result, {
@@ -115,9 +115,9 @@ local function sendEmbed(lines)
     return success
 end
 
-local function isRestockHalfHour()
+local function isRestockHourly()
     local t = os.date("*t")
-    return (t.min == 0 or t.min == 30) and t.sec <= 10, t.min
+    return t.min == 0 and t.sec <= 10, t.min
 end
 
 local function stocksAreDifferent(newItems)
@@ -133,7 +133,7 @@ local function stocksAreDifferent(newItems)
 end
 
 local function checkAndSendHarvest()
-    local isRestock, currentTime = isRestockHalfHour()
+    local isRestock, currentTime = isRestockHourly()
     if not isFirstRun and (not isRestock or currentTime == lastSentTime) then
         return
     end
