@@ -20,7 +20,7 @@ local emojiMap = {
     ["Koi"] = "🐟", 
     ["Zen Gnome Crate"] = "🧙‍♂️", 
     ["Spiked Mango"] = "🥭", 
-    ["Tranquil Radar"] = "💎"
+    ["Tranquil Radar"] = "💎",
     ["Pet Shard Tranquil"] = "💎"
 }
 
