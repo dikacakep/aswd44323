@@ -12,7 +12,7 @@ if not seedFrame or not timerSeed then
 end
 
 local emojiMap = {
-    ["Carrot"] = "🥕", ["Giant Pinecone"] = "🥕", ["Burning Bud"] = "🥕", ["Strawberry"] = "🍓", ["Blueberry"] = "🫐", ["Rafflesia"] = "🌷", ["Orange Tulip"] = "🌷", ["Tomato"] = "🍅", ["Prickly Pear"] = "🍎", ["Pineapple"] = "🍎", ["Green Apple"] = "🍎",
+    ["Carrot"] = "🥕", ["Giant Pinecone"] = "🥕", ["Burning Bud"] = "🥕", ["Elder Strawberry"] = "🍓", ["Strawberry"] = "🍓", ["Blueberry"] = "🫐", ["Rafflesia"] = "🌷", ["Orange Tulip"] = "🌷", ["Tomato"] = "🍅", ["Prickly Pear"] = "🍎", ["Pineapple"] = "🍎", ["Green Apple"] = "🍎",
     ["Corn"] = "🌽", ["Daffodil"] = "🌼", ["Watermelon"] = "🍉", ["Pumpkin"] = "🎃", ["Apple"] = "🍎", ["Feijoa"] = "🍎", ["Bell Pepper"] = "🍎", ["Avocado"] = "🍎",
     ["Bamboo"] = "🍋", ["Pitcher Plant"] = "🍋", ["Coconut"] = "🥥", ["Cactus"] = "🌵", ["Dragon Fruit"] = "🌴", ["Mango"] = "🥭", ["Loquat"] = "🍎", ["Kiwi"] = "🍎", ["Banana"] = "🍎", ["Cauliflower"] = "🍎",
     ["Grape"] = "🍇", ["Mushroom"] = "🍄", ["Pepper"] = "🌶", ["Ember Lily"] = "🪻", ["Cacao"] = "🌰", ["Sugar Apple"] = "🧁", ["Beanstalk"] = "🪻"
