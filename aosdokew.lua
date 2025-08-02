@@ -17,7 +17,7 @@ end
 
 local emojiMap = {
     ["Watering Can"] = "🚿", ["Magnifying Glass"] = "🛠", ["Tanning Mirror"] = "🛠", ["Levelup Lollipop"] = "🛠", ["Medium Toy"] = "🛠", ["Medium Treat"] = "🛠", ["Trowel"] = "🛠", ["Recall Wrench"] = "🔧", ["Basic Sprinkler"] = "💧",
-    ["Advanced Sprinkler"] = "💧", ["Godly Sprinkler"] = "💦", ["Master Sprinkler"] = "💦", ["Lightning Rod"] = "⚡",
+    ["Advanced Sprinkler"] = "💧", ["Godly Sprinkler"] = "💦", ["Master Sprinkler"] = "💦", ["Grandmaster Sprinkler"] = "⚡", ["Trading Ticket"] = "⚡", ["Lightning Rod"] = "⚡",
     ["Favorite Tool"] = "❤", ["Friendship Pot"] = "🫂", ["Cleaning Spray"] = "💦", ["Harvest Tool"] = "🚜"
 }
 
@@ -158,3 +158,4 @@ local function monitorGear()
 end
 
 task.spawn(monitorGear)
+
