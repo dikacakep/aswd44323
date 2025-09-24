@@ -1,4 +1,4 @@
--- Full Code for Seeds Script (Improved Version for Consistency)
+-- Full Code for Seeds Script (Improved for Consistency, Keeping Original Webhook)
 local HttpService = game:GetService("HttpService")
 local player = game:GetService("Players").LocalPlayer
 local seedShop = player.PlayerGui:WaitForChild("Main", 10)
@@ -30,9 +30,9 @@ local lastSentMinute = -1
 local seedFrames = {}
 local previousStocks = {}
 local maxRetryAttempts = 5
-local retryDelay = 1  -- Added small delay for retries
+local retryDelay = 1
 
--- Inisialisasi cache frame with fallback
+-- Initialize cache with fallback
 for _, seedName in ipairs(seedNames) do
     local seedPath = seedFrame:FindFirstChild(seedName)
     if not seedPath then
@@ -52,6 +52,7 @@ for _, seedName in ipairs(seedNames) do
         if stockLabel and stockLabel:IsA("TextLabel") then
             seedFrames[seedName] = stockLabel
             previousStocks[seedName] = -1
+            print("Cached: " .. seedName)  -- Debug
         else
             warn("Stock label not found for: " .. seedName)
         end
@@ -98,7 +99,12 @@ local function sendEmbed(lines)
         }}
     })
     local success, result = pcall(function()
-        return HttpService:PostAsync(webhookSeed, payload, Enum.HttpContentType.ApplicationJson)
+        return request({
+            Url = webhookSeed,
+            Method = "POST",
+            Headers = {["Content-Type"] = "application/json"},
+            Body = payload
+        })
     end)
     if not success then
         warn("Webhook failed: " .. tostring(result))
@@ -113,7 +119,7 @@ local function stocksAreDifferent(newSeeds)
         if seed.stock and seed.stock ~= previousStock then
             isDifferent = true
         end
-        previousStocks[seed.name] = seed.stock
+        previousStocks[seed.name] = seed.stock or -1
     end
     return isDifferent
 end
@@ -153,13 +159,15 @@ end
 local function monitorSeeds()
     timerSeed:GetPropertyChangedSignal("Text"):Connect(function()
         local nowText = timerSeed.Text
-        if nowText == "00:00:00" or nowText == "Restocking..." or string.match(nowText, "^00:0[0-2]:") or string.match(nowText, "^04:5[0-9]:") or string.match(nowText, "^05:0[0-9]:") or string.find(nowText:lower(), "restock") then
+        if nowText == "00:00:00" or nowText == "Restocking..." or string.match(nowText, "^00:0[0-2]:") or 
+           string.match(nowText, "^04:5[0-9]:") or string.match(nowText, "^05:0[0-9]:") or 
+           string.find(nowText:lower(), "restock") then
             task.spawn(checkAndSendSeeds)
         end
     end)
     while true do
         task.spawn(checkAndSendSeeds)
-        task.wait(1)  -- Changed to 1s interval for less spam
+        task.wait(1)  -- Reduced spam with 1s interval
     end
 end
 
