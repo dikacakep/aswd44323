@@ -1,7 +1,7 @@
--- Full Code for Gears Script (Improved Version for Consistency)
+-- Full Code for Gears Script (Improved for Consistency, Keeping Original Webhook)
 local HttpService = game:GetService("HttpService")
 local player = game:GetService("Players").LocalPlayer
-local gearShop = player.PlayerGui:WaitForChild("Main", 10)
+local gearShop = player.PlayerGui:WaitForChild("Main", 10)  -- Extended timeout
 local gears = gearShop:WaitForChild("Gears", 10)
 local frame = gears:WaitForChild("Frame", 10)
 local gearFrame = frame:WaitForChild("ScrollingFrame", 10)
@@ -26,9 +26,9 @@ local lastSentMinute = -1
 local gearFrames = {}
 local previousStocks = {}
 local maxRetryAttempts = 5
-local retryDelay = 1  -- Added small delay for retries
+local retryDelay = 1  -- Small delay for retries
 
--- Inisialisasi cache frame with fallback
+-- Initialize cache with fallback
 for _, gearName in ipairs(gearNames) do
     local gearPath = gearFrame:FindFirstChild(gearName)
     if not gearPath then
@@ -48,6 +48,7 @@ for _, gearName in ipairs(gearNames) do
         if stockLabel and stockLabel:IsA("TextLabel") then
             gearFrames[gearName] = stockLabel
             previousStocks[gearName] = -1
+            print("Cached: " .. gearName)  -- Debug
         else
             warn("Stock label not found for: " .. gearName)
         end
@@ -94,7 +95,12 @@ local function sendEmbed(lines)
         }}
     })
     local success, result = pcall(function()
-        return HttpService:PostAsync(webhookGear, payload, Enum.HttpContentType.ApplicationJson)
+        return request({
+            Url = webhookGear,
+            Method = "POST",
+            Headers = {["Content-Type"] = "application/json"},
+            Body = payload
+        })
     end)
     if not success then
         warn("Webhook failed: " .. tostring(result))
@@ -109,7 +115,7 @@ local function stocksAreDifferent(newGears)
         if gear.stock and gear.stock ~= previousStock then
             isDifferent = true
         end
-        previousStocks[gear.name] = gear.stock
+        previousStocks[gear.name] = gear.stock or -1
     end
     return isDifferent
 end
@@ -149,13 +155,15 @@ end
 local function monitorGears()
     timerGear:GetPropertyChangedSignal("Text"):Connect(function()
         local nowText = timerGear.Text
-        if nowText == "00:00:00" or nowText == "Restocking..." or string.match(nowText, "^00:0[0-2]:") or string.match(nowText, "^04:5[0-9]:") or string.match(nowText, "^05:0[0-9]:") or string.find(nowText:lower(), "restock") then
+        if nowText == "00:00:00" or nowText == "Restocking..." or string.match(nowText, "^00:0[0-2]:") or 
+           string.match(nowText, "^04:5[0-9]:") or string.match(nowText, "^05:0[0-9]:") or 
+           string.find(nowText:lower(), "restock") then
             task.spawn(checkAndSendGears)
         end
     end)
     while true do
         task.spawn(checkAndSendGears)
-        task.wait(1)  -- Changed to 1s interval for less spam
+        task.wait(1)  -- Reduced spam with 1s interval
     end
 end
 
